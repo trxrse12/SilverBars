@@ -7,6 +7,7 @@ describe('sbars lib', function(){
     const orderType = IOrderType.BUY;
 
     const newOrder: IOrder = {
+      orderId: 1,
       userId:"Sam Smith",
       orderQuantity:3.5,
       pricePerKg: 303,
@@ -15,6 +16,7 @@ describe('sbars lib', function(){
     const sbars = new SBars({});
     // the registerOrder should return "OK" if order registered successfully
     expect(sbars.registerOrder(newOrder)).to.equal('OK');
+    expect(sbars.getOrder(newOrder.orderId)[0]).to.deep.equal(newOrder);
   })
-})
+});
 
