@@ -32,5 +32,18 @@ describe('sbars lib', function(){
     // the registerOrder should throw if order already stored
     expect(() => sbars.registerOrder(newOrder)).to.throw("Order already stored");
   })
+
+  it('should NOT allow the creation of an empty order', function() {
+    const emptyOrder: IOrder = {
+      orderId: 2,
+      userId:"John Dow",
+      orderQuantity:0,
+      pricePerKg: 303,
+      orderType: orderType
+    };
+
+    // the register should throw if order empty (quantity 0):
+    expect(() => sbars.registerOrder(emptyOrder)).to.throw("Empty order");
+  })
 });
 
