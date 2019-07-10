@@ -42,6 +42,14 @@ export default class SBars<initialConfigs> {
     }
   }
 
+  public cancelOrder(myOrderId: number): string {
+    if (myOrderId && this.getOrder(myOrderId).length > 0) {
+      return 'OK';
+    } else {
+      throw new Error("Order does not exist");
+    }
+  }
+
   public getOrder(myOrderId: number): IOrder[] {
     return this.findById(myOrderId, this.orderStore);
   }

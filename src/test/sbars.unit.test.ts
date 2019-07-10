@@ -3,7 +3,6 @@ import SBars, {IOrderType, IOrder} from '../sBars';
 import 'mocha';
 
 describe('sbars lib', function(){
-
   const newOrder: IOrder = {
     orderId: 1,
     userId:"Sam Smith",
@@ -42,7 +41,7 @@ describe('sbars lib', function(){
     };
     // the register should throw if order empty (quantity 0):
     expect(() => sbars.registerOrder(emptyOrder)).to.throw("Invalid order");
-  })
+  });
 
   it('should NOT allow the creation of an invalid order', function() {
     const invalidOrder: IOrder = {
@@ -54,6 +53,12 @@ describe('sbars lib', function(){
     };
     // the register should throw if order empty (quantity 0):
     expect(() => sbars.registerOrder(invalidOrder)).to.throw("Invalid order");
+  })
+
+  // Cancel orders testing
+  it('should throw if the user cancels an inexistent order', function(){
+    const inexistentOrderId = 2300;
+    expect(()=> sbars.cancelOrder(inexistentOrderId)).to.throw("Order does not exist");
   })
 });
 
