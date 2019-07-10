@@ -29,13 +29,21 @@ export default class SBars<initialConfigs> {
   }
 
   public registerOrder(myOrder: IOrder):string {
-    //this.orderStore.push(myOrder);
-    this.orderStore.push(myOrder);
-    return "OK";
+    if (myOrder.orderId && this.getOrder(myOrder.orderId).length==0) {
+      this.orderStore.push(myOrder);
+      return "OK";
+    } else {
+        throw new Error("Order already stored")
+    }
   }
 
   public getOrder(myOrderId: number): IOrder[] {
     return this.findById(myOrderId, this.orderStore);
+  }
+
+  public clearOrders(){
+    this.orderStore = [];
+    return "OK";
   }
 }
 
