@@ -80,13 +80,6 @@ describe('sbars lib', function() {
   describe('Feature: get summary information', function() {
     const orders = [
       {
-        orderId: 100,
-        userId: "user1",
-        orderQuantity: 3.5,
-        pricePerKg: 306,
-        orderType: IOrderType.SELL
-      },
-      {
         orderId: 200,
         userId: "user2",
         orderQuantity: 1.2,
@@ -101,10 +94,17 @@ describe('sbars lib', function() {
         orderType: IOrderType.SELL
       },
       {
+        orderId: 100,
+        userId: "user1",
+        orderQuantity: 3.5,
+        pricePerKg: 306,
+        orderType: IOrderType.SELL
+      },
+      {
         orderId: 600,
         userId: "user4",
         orderQuantity: 13.0,
-        pricePerKg: 306,
+        pricePerKg: 303,
         orderType: IOrderType.BUY
       },
       {
@@ -113,24 +113,51 @@ describe('sbars lib', function() {
         orderQuantity: 2.0,
         pricePerKg: 306,
         orderType: IOrderType.SELL
-      }
+      },
+      {
+        orderId: 800,
+        userId: "user5",
+        orderQuantity: 65.0,
+        pricePerKg: 303,
+        orderType: IOrderType.BUY
+      },
+      {
+        orderId: 900,
+        userId: "user4",
+        orderQuantity: 13.0,
+        pricePerKg: 306,
+        orderType: IOrderType.BUY
+      },
     ];
     beforeEach(() => {
       sbars.clearOrders();
       sbarsRegisterReponse = "";
       orders.forEach(order => sbarsRegisterReponse = sbars.registerOrder(order));
     });
-    it('sbars should have registered all the orderes in the array', function(){
+    it('sbars should have registered all the orders in the array', function(){
         orders.map(order => {
           expect(sbars.getOrder(order.orderId)[0].orderId).to.be.equal(order.orderId);
       })
     });
-    describe('sbars should produce the summary as per user cases', function(){
-      it('should produce a concise summary', function() {
-        let summarySold = {'306': 5.5, '307': 1.5, '310': 1.2};
-        expect( sbars.getSummarySold(IOrderType.SELL)).to.deep.equal(summarySold);
-      })
-    })
+
+    describe('sbars should produce the summary grouped per unit price', function(){
+      it('should produce a concise summary for SELL transactions', function() {
+        let summarySoldTestData = [{'306': 5.5}, {'307': 1.5}, {'310': 1.2}];
+        expect( sbars.getSummary(IOrderType.SELL)).to.deep.equal(summarySoldTestData);
+      });
+      it('should produce a concise summary for BUY transactions', function() {
+        let summarySoldTestData = [{'303':78},{'306': 13}];
+        expect( sbars.getSummary(IOrderType.BUY)).to.deep.equal(summarySoldTestData);
+      });
+    });
+
+    // describe('sbars should produce ', function(){
+    //   it('summaries starting with lowest price first for SELL transactions', function() {
+    //     let summarySoldTestData = {'306': 5.5, '307': 1.5, '310': 1.2};
+    //     let summarySellReport =  sbars.getSummary(IOrderType.SELL);
+    //     expect(summarySellReport)
+    //   });
+    // })
   })
 });
 

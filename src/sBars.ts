@@ -67,23 +67,31 @@ export default class SBars<initialConfigs> {
     return this.findById(myOrderId, this.orderStore);
   }
 
-  public getSummarySold(transactionType: IOrderType) {
+  public getSummary(transactionType: IOrderType) {
     // build the summary of the sold items;
-    const summarySold = this.orderStore
+    const summary = this.orderStore
         .filter(order => order.orderType==transactionType)
         .reduce((summary, order) => {
-          let totalSold:number = order.orderQuantity;
+          let total:number = order.orderQuantity;
           if (order.orderType == transactionType){
             return {
               ...summary,
-              [order.pricePerKg]: summary[order.pricePerKg] ? summary[order.pricePerKg] + totalSold: totalSold
+              [order.pricePerKg]: summary[order.pricePerKg] ? summary[order.pricePerKg] + total: total
             }
           } else {
             return {...summary};
           };
         }, {});
+    // convert the summary object into an array of objects (to make it sortable)
+    summary[Symbol.iterator] = function* () {
+      for (let key in this){
+        yield {[key]: this[key]}
+      }
+    };
+    // @ts-ignore
+    const summaryIterable = [...summary];
 
-    return summarySold;
+    return summaryIterable;
   }
 
   public clearOrders(){
