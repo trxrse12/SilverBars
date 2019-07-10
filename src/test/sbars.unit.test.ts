@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import SBars, {IOrderType, IOrder} from '../sBars';
 import 'mocha';
+import sBars from "../sBars";
 
 describe('sbars lib', function() {
   const newOrder: IOrder = {
@@ -75,5 +76,49 @@ describe('sbars lib', function() {
       expect(sbars.getOrder(newOrder.orderId)).to.be.empty;
     })
   });
+
+  // Get summary info
+  describe('Feature: get summary information', function() {
+    const orders = [
+      {
+        orderId: 100,
+        userId: "user1",
+        orderQuantity: 3.5,
+        pricePerKg: 306,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 200,
+        userId: "user2",
+        orderQuantity: 1.2,
+        pricePerKg: 310,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 300,
+        userId: "user3",
+        orderQuantity: 1.5,
+        pricePerKg: 307,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 400,
+        userId: "user14",
+        orderQuantity: 2.0,
+        pricePerKg: 306,
+        orderType: IOrderType.SELL
+      }
+    ];
+    beforeEach(() => {
+      sbars.clearOrders();
+      sbarsRegisterReponse = "";
+      orders.forEach(order => sbarsRegisterReponse = sbars.registerOrder(order));
+    });
+    it('sbars should have registered all the orderes in the array', function(){
+        orders.map(order => {
+          expect(sbars.getOrder(order.orderId)[0].orderId).to.be.equal(order.orderId);
+      })
+    })
+  })
 });
 
