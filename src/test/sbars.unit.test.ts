@@ -72,7 +72,7 @@ describe('sbars lib', function() {
     it ('should allow a user to delete a pre-existing order', function () {
       sbarsRegisterReponse = sbars.cancelOrder(newOrder.orderId);
       expect(sbarsRegisterReponse).to.equal('OK');
-      //expect(sbars.getOrder(newOrder.orderId)).to.be.empty;
+      expect(sbars.getOrder(newOrder.orderId)).to.be.empty;
     })
   });
 });
