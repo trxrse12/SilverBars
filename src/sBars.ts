@@ -31,14 +31,14 @@ export default class SBars<initialConfigs> {
   public registerOrder(myOrder: IOrder):string {
     if (myOrder.orderId && this.getOrder(myOrder.orderId).length==0) {
       // no previous orders with the same orderId
-      if (myOrder.orderQuantity>0){
+      if (myOrder.orderQuantity > 0) {
         this.orderStore.push(myOrder);
         return "OK";
       } else {
-        throw new Error("Empty order");
+        throw new Error("Invalid order");
       }
     } else {
-        throw new Error("Order already stored")
+      throw new Error("Order already stored");
     }
   }
 

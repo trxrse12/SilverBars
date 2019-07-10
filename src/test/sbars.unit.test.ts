@@ -3,14 +3,13 @@ import SBars, {IOrderType, IOrder} from '../sBars';
 import 'mocha';
 
 describe('sbars lib', function(){
-  const orderType = IOrderType.BUY;
 
   const newOrder: IOrder = {
     orderId: 1,
     userId:"Sam Smith",
     orderQuantity:3.5,
     pricePerKg: 303,
-    orderType: orderType
+    orderType: IOrderType.BUY
   };
   const sbars = new SBars({});
 
@@ -31,7 +30,7 @@ describe('sbars lib', function(){
     // re-register an order:
     // the registerOrder should throw if order already stored
     expect(() => sbars.registerOrder(newOrder)).to.throw("Order already stored");
-  })
+  });
 
   it('should NOT allow the creation of an empty order', function() {
     const emptyOrder: IOrder = {
@@ -39,11 +38,22 @@ describe('sbars lib', function(){
       userId:"John Dow",
       orderQuantity:0,
       pricePerKg: 303,
-      orderType: orderType
+      orderType: IOrderType.BUY
     };
-
     // the register should throw if order empty (quantity 0):
-    expect(() => sbars.registerOrder(emptyOrder)).to.throw("Empty order");
+    expect(() => sbars.registerOrder(emptyOrder)).to.throw("Invalid order");
+  })
+
+  it('should NOT allow the creation of an invalid order', function() {
+    const invalidOrder: IOrder = {
+      orderId: 3,
+      userId:"John Dow",
+      orderQuantity:-120,
+      pricePerKg: 303,
+      orderType: IOrderType.BUY
+    };
+    // the register should throw if order empty (quantity 0):
+    expect(() => sbars.registerOrder(invalidOrder)).to.throw("Invalid order");
   })
 });
 
