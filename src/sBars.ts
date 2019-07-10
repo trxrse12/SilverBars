@@ -44,7 +44,8 @@ export default class SBars<initialConfigs> {
 
   public cancelOrder(myOrderId: number): string {
     if (myOrderId && this.getOrder(myOrderId).length > 0) {
-      return 'OK';
+      this.orderStore.splice(this.orderStore.findIndex(order => order.orderId === myOrderId),1);
+      return "OK";
     } else {
       throw new Error("Order does not exist");
     }
@@ -59,4 +60,3 @@ export default class SBars<initialConfigs> {
     return "OK";
   }
 }
-
