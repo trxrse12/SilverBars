@@ -102,8 +102,15 @@ describe('sbars lib', function() {
         orderType: IOrderType.SELL
       },
       {
+        orderId: 600,
+        userId: "user4",
+        orderQuantity: 13.0,
+        pricePerKg: 306,
+        orderType: IOrderType.BUY
+      },
+      {
         orderId: 400,
-        userId: "user14",
+        userId: "user4",
         orderQuantity: 2.0,
         pricePerKg: 306,
         orderType: IOrderType.SELL
@@ -117,6 +124,12 @@ describe('sbars lib', function() {
     it('sbars should have registered all the orderes in the array', function(){
         orders.map(order => {
           expect(sbars.getOrder(order.orderId)[0].orderId).to.be.equal(order.orderId);
+      })
+    });
+    describe('sbars should produce the summary as per user cases', function(){
+      it('should produce a concise summary', function() {
+        let summarySold = {'306': 5.5, '307': 1.5, '310': 1.2};
+        expect( sbars.getSummarySold()).to.deep.equal(summarySold);
       })
     })
   })

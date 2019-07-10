@@ -17,12 +17,24 @@ export interface IOrder {
 
 export interface IOrderStorage extends Array<IOrder>{};
 
+export interface ISummaryItem {
+  quantity: number;
+  price: number;
+  transactionType: IOrderType
+}
+
+export interface ISummary extends Array<ISummaryItem>{};
+
+
 export default class SBars<initialConfigs> {
   private configs: IConfigs;
   private orderStore: IOrderStorage = [];
+  private summary: ISummary = [];
+
   private findById = (orderId: number, orderStore: IOrderStorage) => orderStore.filter(order => {
     return order.orderId == orderId;
   });
+
 
   constructor(configs: IConfigs){
     this.configs = configs;
@@ -53,6 +65,28 @@ export default class SBars<initialConfigs> {
 
   public getOrder(myOrderId: number): IOrder[] {
     return this.findById(myOrderId, this.orderStore);
+  }
+
+  public getSummarySold() {
+    // build the summary of the sold items;
+    const summarySold = this.orderStore
+        .filter(order => order.orderType==IOrderType.SELL)
+        .reduce((summary, order) => {
+          let totalSold:number = order.orderQuantity;
+          if (order.orderType == IOrderType.SELL){
+            console.log(summary)
+            console.log(order.pricePerKg)
+            console.log(summary[order.pricePerKg]);
+            return {
+              ...summary,
+              [order.pricePerKg]: summary[order.pricePerKg] ? summary[order.pricePerKg] + totalSold: totalSold
+            }
+          } else {
+            return {...summary};
+          };
+        }, {});
+
+    return summarySold;
   }
 
   public clearOrders(){
