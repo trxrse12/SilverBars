@@ -1,7 +1,6 @@
 import {expect} from 'chai';
-import SBars, {IOrderType, IOrder} from '../sBars';
+import SBars, {IOrder, IOrderType} from '../sBars';
 import 'mocha';
-import sBars from "../sBars";
 
 describe('sbars lib', function() {
   const newOrder: IOrder = {
@@ -129,7 +128,7 @@ describe('sbars lib', function() {
     describe('sbars should produce the summary as per user cases', function(){
       it('should produce a concise summary', function() {
         let summarySold = {'306': 5.5, '307': 1.5, '310': 1.2};
-        expect( sbars.getSummarySold()).to.deep.equal(summarySold);
+        expect( sbars.getSummarySold(IOrderType.SELL)).to.deep.equal(summarySold);
       })
     })
   })

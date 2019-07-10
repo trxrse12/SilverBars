@@ -67,16 +67,13 @@ export default class SBars<initialConfigs> {
     return this.findById(myOrderId, this.orderStore);
   }
 
-  public getSummarySold() {
+  public getSummarySold(transactionType: IOrderType) {
     // build the summary of the sold items;
     const summarySold = this.orderStore
-        .filter(order => order.orderType==IOrderType.SELL)
+        .filter(order => order.orderType==transactionType)
         .reduce((summary, order) => {
           let totalSold:number = order.orderQuantity;
-          if (order.orderType == IOrderType.SELL){
-            console.log(summary)
-            console.log(order.pricePerKg)
-            console.log(summary[order.pricePerKg]);
+          if (order.orderType == transactionType){
             return {
               ...summary,
               [order.pricePerKg]: summary[order.pricePerKg] ? summary[order.pricePerKg] + totalSold: totalSold
