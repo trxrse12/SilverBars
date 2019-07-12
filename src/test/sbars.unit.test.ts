@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import SBars, {IOrderType, IOrder} from '../sBars';
+import SBars, {IOrder, IOrderType} from '../sBars';
 import 'mocha';
 
 describe('sbars lib', function() {
@@ -75,5 +75,83 @@ describe('sbars lib', function() {
       expect(sbars.getOrder(newOrder.orderId)).to.be.empty;
     })
   });
+
+  // Get summary info
+  describe('Feature: get summary information', function() {
+    const orders = [
+      {
+        orderId: 200,
+        userId: "user2",
+        orderQuantity: 1.2,
+        pricePerKg: 310,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 300,
+        userId: "user3",
+        orderQuantity: 1.5,
+        pricePerKg: 307,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 100,
+        userId: "user1",
+        orderQuantity: 3.5,
+        pricePerKg: 306,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 600,
+        userId: "user4",
+        orderQuantity: 13.0,
+        pricePerKg: 303,
+        orderType: IOrderType.BUY
+      },
+      {
+        orderId: 400,
+        userId: "user4",
+        orderQuantity: 2.0,
+        pricePerKg: 306,
+        orderType: IOrderType.SELL
+      },
+      {
+        orderId: 800,
+        userId: "user5",
+        orderQuantity: 65.0,
+        pricePerKg: 303,
+        orderType: IOrderType.BUY
+      },
+      {
+        orderId: 900,
+        userId: "user4",
+        orderQuantity: 13.0,
+        pricePerKg: 306,
+        orderType: IOrderType.BUY
+      },
+    ];
+    beforeEach(() => {
+      sbars.clearOrders();
+      sbarsRegisterReponse = "";
+      orders.forEach(order => sbarsRegisterReponse = sbars.registerOrder(order));
+    });
+    it('sbars should have registered all the orders in the array', function(){
+        orders.map(order => {
+          expect(sbars.getOrder(order.orderId)[0].orderId).to.be.equal(order.orderId);
+      })
+    });
+
+    describe('sbars should produce the summary grouped per unit price:', function(){
+      it('should produce a concise summary for SELL transactions, sorted ascendingly after the price per unit', function() {
+        let summarySoldTestData = [{'306': 5.5}, {'307': 1.5}, {'310': 1.2}];
+        expect( sbars.getSummary(IOrderType.SELL)).to.deep.equal(summarySoldTestData);
+      });
+      it('should produce a concise summary for BUY transactions, sorted descendingly after the price per unit', function() {
+        let summarySoldTestData = [{'306':13},{'303': 78}];
+        expect( sbars.getSummary(IOrderType.BUY)).to.deep.equal(summarySoldTestData);
+      });
+    });
+
+
+  })
 });
 
