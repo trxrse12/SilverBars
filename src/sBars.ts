@@ -82,16 +82,22 @@ export default class SBars<initialConfigs> {
             return {...summary};
           };
         }, {});
-    // convert the summary object into an array of objects (to make it sortable)
+    // convert the summary object into an array of objects [{key1:val},{key2:val}] (to make it iterable)
     summary[Symbol.iterator] = function* () {
       for (let key in this){
         yield {[key]: this[key]}
       }
     };
-    // @ts-ignore
-    const summaryIterable = [...summary];
-
-    return summaryIterable;
+    if (transactionType===IOrderType.SELL){
+      // @ts-ignore
+      const summarySell = [...summary]; // return an array of objects
+      return summarySell;
+    } else if (transactionType===IOrderType.BUY){
+      // reverse the objects according to the selling price
+      // @ts-ignore
+      const summarySellUnsorted = [...summary];
+      return summarySellUnsorted.sort((a,b) => (a.pricePerKg > b.pricePerKg) ? -1 : 1)
+    }
   }
 
   public clearOrders(){

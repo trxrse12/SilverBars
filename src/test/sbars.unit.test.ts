@@ -140,24 +140,18 @@ describe('sbars lib', function() {
       })
     });
 
-    describe('sbars should produce the summary grouped per unit price', function(){
-      it('should produce a concise summary for SELL transactions', function() {
+    describe('sbars should produce the summary grouped per unit price:', function(){
+      it('should produce a concise summary for SELL transactions, sorted ascendingly after the price per unit', function() {
         let summarySoldTestData = [{'306': 5.5}, {'307': 1.5}, {'310': 1.2}];
         expect( sbars.getSummary(IOrderType.SELL)).to.deep.equal(summarySoldTestData);
       });
-      it('should produce a concise summary for BUY transactions', function() {
-        let summarySoldTestData = [{'303':78},{'306': 13}];
+      it('should produce a concise summary for BUY transactions, sorted descendingly after the price per unit', function() {
+        let summarySoldTestData = [{'306':13},{'303': 78}];
         expect( sbars.getSummary(IOrderType.BUY)).to.deep.equal(summarySoldTestData);
       });
     });
 
-    // describe('sbars should produce ', function(){
-    //   it('summaries starting with lowest price first for SELL transactions', function() {
-    //     let summarySoldTestData = {'306': 5.5, '307': 1.5, '310': 1.2};
-    //     let summarySellReport =  sbars.getSummary(IOrderType.SELL);
-    //     expect(summarySellReport)
-    //   });
-    // })
+
   })
 });
 
