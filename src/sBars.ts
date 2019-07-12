@@ -1,12 +1,31 @@
+/* Remus Sepp
+  Live Order Board >>> a library that can be used to display the amount of silver bars demand in the market
+
+  Requirements:
+  1. Register an order;
+  2. Cancel a registered order;
+  3. Get summary info of live orders;
+
+  How to use it:
+  1. Register order: sbarsInstance(myOrderObject);
+  2. cancelOrder(myOrderId);
+  3. getOrder(myOrderId)
+  4. getSumary(BUY|SELL);
+  5. clearOrders();
+ */
+
+// interface to be used for future class configs
 interface IConfigs {
   initialConfig?:any;
 }
 
+// two order types
 export enum IOrderType {
   BUY,
   SELL
 }
 
+// An order contains:
 export interface IOrder {
   orderId: number;
   userId: string;
@@ -15,8 +34,10 @@ export interface IOrder {
   orderType: IOrderType;
 }
 
+// the orders are stored in an array
 export interface IOrderStorage extends Array<IOrder>{};
 
+// The summary consist of items:
 export interface ISummaryItem {
   quantity: number;
   price: number;
@@ -26,6 +47,9 @@ export interface ISummaryItem {
 export interface ISummary extends Array<ISummaryItem>{};
 
 
+
+
+// the main class
 export default class SBars<initialConfigs> {
   private configs: IConfigs;
   private orderStore: IOrderStorage = [];
